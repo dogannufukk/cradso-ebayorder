@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /></head>
+<body style="margin:0;padding:0;background-color:#f4f4f7;font-family:'Segoe UI',Arial,sans-serif;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f7;padding:40px 0;">
+    <tr><td align="center">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="background-color:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.08);">
+        <tr><td style="background:linear-gradient(135deg,#065f46,#059669);padding:36px 40px;text-align:center;">
+          <div style="width:48px;height:48px;background-color:rgba(255,255,255,0.2);border-radius:12px;line-height:48px;text-align:center;margin:0 auto 12px;"><span style="font-size:24px;color:#fff;font-weight:700;">C</span></div>
+          <h1 style="margin:0;color:#fff;font-size:22px;font-weight:700;">Your Order Has Been Shipped!</h1>
+          <p style="margin:8px 0 0;color:rgba(255,255,255,0.8);font-size:14px;">Track your delivery with Royal Mail</p>
+        </td></tr>
+        <tr><td style="padding:36px 40px;">
+          <p style="margin:0 0 20px;color:#374151;font-size:15px;line-height:1.6;">Hello <strong>{{customer_name}}</strong>,</p>
+          <p style="margin:0 0 24px;color:#374151;font-size:15px;line-height:1.6;">Your order <strong>#{{order_no}}</strong> has been dispatched and is on its way to you!</p>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px;border-radius:8px;border:1px solid #e5e7eb;overflow:hidden;">
+            <tr><td style="background-color:#f0fdf4;padding:20px;text-align:center;">
+              <p style="margin:0 0 4px;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Carrier</p>
+              <p style="margin:0 0 16px;color:#111827;font-size:16px;font-weight:600;">{{carrier}}</p>
+              <p style="margin:0 0 4px;color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Tracking Number</p>
+              <p style="margin:0;color:#111827;font-size:20px;font-weight:700;letter-spacing:1px;">{{tracking_number}}</p>
+            </td></tr>
+          </table>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 24px;border-radius:8px;border:1px solid #e5e7eb;overflow:hidden;">
+            <tr><td style="background-color:#f8fafc;padding:10px 16px;border-bottom:1px solid #e5e7eb;">
+              <span style="color:#6b7280;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Items in this shipment</span>
+            </td></tr>
+            {{~ for item in items ~}}
+            <tr><td style="padding:10px 16px;border-bottom:1px solid #f3f4f6;">
+              <span style="color:#111827;font-size:14px;font-weight:600;">{{item.sku}}</span>
+              <span style="color:#6b7280;font-size:12px;margin-left:8px;">× {{item.quantity}}</span>
+            </td></tr>
+            {{~ end ~}}
+          </table>
+          <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
+            <tr><td align="center">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr><td style="border-radius:8px;background-color:#059669;">
+                  <a href="{{tracking_url}}" target="_blank" style="display:inline-block;padding:14px 40px;color:#fff;font-size:15px;font-weight:600;text-decoration:none;letter-spacing:0.3px;">Track Your Parcel</a>
+                </td></tr>
+              </table>
+            </td></tr>
+          </table>
+          <p style="margin:24px 0 0;color:#9ca3af;font-size:12px;line-height:1.5;text-align:center;">
+            Or track directly at:<br /><a href="{{tracking_url}}" style="color:#059669;word-break:break-all;">{{tracking_url}}</a>
+          </p>
+        </td></tr>
+        <tr><td style="padding:20px 40px;background-color:#f8fafc;border-top:1px solid #e5e7eb;text-align:center;">
+          <p style="margin:0 0 4px;color:#6b7280;font-size:12px;font-weight:600;">CRADSO Design Portal</p>
+          <p style="margin:0;color:#9ca3af;font-size:11px;">This is an automated message.</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
