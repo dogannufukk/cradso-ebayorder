@@ -1,3 +1,4 @@
+using EbayDesign.Application.Common.Helpers;
 using EbayDesign.Application.Common.Interfaces;
 using EbayDesign.Domain.Enums;
 using EbayDesign.Domain.Events;
@@ -9,21 +10,24 @@ namespace EbayDesign.Application.Features.Designs.EventHandlers;
 
 /// <summary>
 /// When a customer submits files (CustomerUploaded), check if ALL items for the order
-/// have been submitted. If so, send a single admin notification email.
+/// have been submitted. If so, send admin notification email(s).
 /// </summary>
 public class CustomerSubmittedEventHandler : INotificationHandler<DesignRequestStatusChangedEvent>
 {
     private readonly IApplicationDbContext _context;
     private readonly IEmailService _emailService;
+    private readonly IAppSettings _appSettings;
     private readonly ILogger<CustomerSubmittedEventHandler> _logger;
 
     public CustomerSubmittedEventHandler(
         IApplicationDbContext context,
         IEmailService emailService,
+        IAppSettings appSettings,
         ILogger<CustomerSubmittedEventHandler> logger)
     {
         _context = context;
         _emailService = emailService;
+        _appSettings = appSettings;
         _logger = logger;
     }
 
@@ -74,14 +78,13 @@ public class CustomerSubmittedEventHandler : INotificationHandler<DesignRequestS
                 item_count = submittedItems.Count
             };
 
-            await _emailService.QueueAsync(
-                "CustomerSubmittedForReview",
-                model,
-                "admin@ebaydesign.co.uk",
-                $"Design Files Submitted for Review - Order {order.EbayOrderNo} ({submittedItems.Count} items)",
-                "Order",
-                order.Id.ToString(),
-                cancellationToken);
+            await AdminNotificationHelper.SendAdminNotificationAsync(
+                _context, _emailService, _appSettings,
+                order.Id.ToString(), order.EbayOrderNo, order.Customer.CustomerName ?? "",
+                "Customer Files Uploaded",
+                $"Customer has uploaded design files for print review.",
+                submittedItems.Count,
+                cancellationToken: cancellationToken);
 
             _logger.LogInformation(
                 "Admin notification queued: all {Count} items submitted for order {OrderId}.",

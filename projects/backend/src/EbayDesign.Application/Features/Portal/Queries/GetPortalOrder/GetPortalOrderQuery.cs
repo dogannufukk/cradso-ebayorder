@@ -20,12 +20,16 @@ public record PortalOrderItemDto(
     DesignRequestStatus Status,
     string? RejectionReason,
     string? ApprovalToken,
-    List<PortalFileDto> ActiveFiles
+    List<PortalFileDto> ActiveFiles,
+    List<PortalFileDto> AllFiles
 );
 
 public record PortalFileDto(
     string FileName,
     string FileType,
     string PreviewUrl,
-    int Version
+    int Version,
+    bool IsActive,
+    string UploadedBy,
+    string? RejectionReason
 );

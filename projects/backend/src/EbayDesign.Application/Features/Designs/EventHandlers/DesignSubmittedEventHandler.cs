@@ -15,15 +15,18 @@ public class DesignSubmittedEventHandler : INotificationHandler<DesignRequestSta
 {
     private readonly IApplicationDbContext _context;
     private readonly IEmailService _emailService;
+    private readonly IAppSettings _appSettings;
     private readonly ILogger<DesignSubmittedEventHandler> _logger;
 
     public DesignSubmittedEventHandler(
         IApplicationDbContext context,
         IEmailService emailService,
+        IAppSettings appSettings,
         ILogger<DesignSubmittedEventHandler> logger)
     {
         _context = context;
         _emailService = emailService;
+        _appSettings = appSettings;
         _logger = logger;
     }
 
@@ -63,7 +66,7 @@ public class DesignSubmittedEventHandler : INotificationHandler<DesignRequestSta
 
             // Use first item's token as portal entry
             var firstToken = waitingItems.First().ApprovalToken;
-            var portalUrl = $"http://localhost:5177/portal/design/{firstToken}";
+            var portalUrl = $"{_appSettings.BaseUrl}/Portal/Design/{firstToken}";
 
             var items = waitingItems.Select(dr => new
             {

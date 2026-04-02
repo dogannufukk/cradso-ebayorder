@@ -1,0 +1,19 @@
+@{
+    ViewData["Title"] = "Email Logs";
+}
+
+<h4 class="fw-bold mb-4">Email Logs</h4>
+
+<!-- Summary Stats -->
+<div class="row g-3 mb-4" id="email-stats">
+    <div class="col-md-4"><div class="card border-0 shadow-sm"><div class="card-body"><div class="text-muted small">Pending</div><div class="fs-5 fw-bold text-warning" id="stat-pending">-</div></div></div></div>
+    <div class="col-md-4"><div class="card border-0 shadow-sm"><div class="card-body"><div class="text-muted small">Sent</div><div class="fs-5 fw-bold text-success" id="stat-sent">-</div></div></div></div>
+    <div class="col-md-4"><div class="card border-0 shadow-sm"><div class="card-body"><div class="text-muted small">Failed</div><div class="fs-5 fw-bold text-danger" id="stat-failed">-</div></div></div></div>
+</div>
+
+<div id="emaillogs-grid"></div>
+
+@section Scripts {
+<script src="~/js/datagrid.js"></script>
+<script src="~/js/pages/email-logs.js"></script>
+}

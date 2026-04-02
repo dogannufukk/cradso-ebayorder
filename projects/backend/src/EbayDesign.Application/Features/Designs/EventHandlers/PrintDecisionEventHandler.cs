@@ -16,15 +16,18 @@ public class PrintDecisionEventHandler : INotificationHandler<DesignRequestStatu
 {
     private readonly IApplicationDbContext _context;
     private readonly IEmailService _emailService;
+    private readonly IAppSettings _appSettings;
     private readonly ILogger<PrintDecisionEventHandler> _logger;
 
     public PrintDecisionEventHandler(
         IApplicationDbContext context,
         IEmailService emailService,
+        IAppSettings appSettings,
         ILogger<PrintDecisionEventHandler> logger)
     {
         _context = context;
         _emailService = emailService;
+        _appSettings = appSettings;
         _logger = logger;
     }
 
@@ -34,21 +37,27 @@ public class PrintDecisionEventHandler : INotificationHandler<DesignRequestStatu
             && notification.NewStatus != DesignRequestStatus.PrintApproved)
             return;
 
-        // Check if ALL items have been reviewed (no more CustomerUploaded)
+        // Check if ALL items that had customer uploads have been reviewed
         var allDesignRequests = await _context.DesignRequests
             .Include(dr => dr.OrderItem)
             .Where(dr => dr.OrderId == notification.OrderId)
             .ToListAsync(cancellationToken);
 
-        var hasUnreviewed = allDesignRequests.Any(dr =>
-            dr.Status == DesignRequestStatus.CustomerUploaded
-            || dr.Status == DesignRequestStatus.WaitingUpload);
+        // Only consider items that were in the review pipeline (had customer uploads)
+        var reviewableItems = allDesignRequests
+            .Where(dr => dr.Status == DesignRequestStatus.CustomerUploaded
+                || dr.Status == DesignRequestStatus.PrintApproved
+                || dr.Status == DesignRequestStatus.PrintRejected)
+            .ToList();
+
+        var hasUnreviewed = reviewableItems.Any(dr =>
+            dr.Status == DesignRequestStatus.CustomerUploaded);
 
         // If there are still unreviewed items, wait until all are done
         if (hasUnreviewed) return;
 
-        // All items reviewed — check if any were rejected
-        var rejectedItems = allDesignRequests
+        // All reviewed — check if any were rejected
+        var rejectedItems = reviewableItems
             .Where(dr => dr.Status == DesignRequestStatus.PrintRejected)
             .ToList();
 
@@ -71,7 +80,7 @@ public class PrintDecisionEventHandler : INotificationHandler<DesignRequestStatu
 
             // Use first rejected item's token as portal entry
             var firstRejected = rejectedItems.First();
-            var portalUrl = $"http://localhost:5177/portal/design/{firstRejected.ApprovalToken}";
+            var portalUrl = $"{_appSettings.BaseUrl}/Portal/Design/{firstRejected.ApprovalToken}";
 
             var items = rejectedItems.Select(dr => new
             {

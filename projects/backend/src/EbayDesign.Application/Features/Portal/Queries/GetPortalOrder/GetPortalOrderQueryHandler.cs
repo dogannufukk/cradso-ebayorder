@@ -53,15 +53,21 @@ public class GetPortalOrderQueryHandler : IRequestHandler<GetPortalOrderQuery, P
             if (dr == null) continue;
 
             var activeFiles = new List<PortalFileDto>();
-            foreach (var file in dr.Files.Where(f => f.IsActive).OrderBy(f => f.Version))
+            var allFiles = new List<PortalFileDto>();
+
+            foreach (var file in dr.Files.OrderByDescending(f => f.Version).ThenByDescending(f => f.CreatedDate))
             {
                 var previewUrl = _fileStorage.GeneratePreSignedUrl(file.FileUrl, TimeSpan.FromHours(1));
-                activeFiles.Add(new PortalFileDto(file.FileName, file.FileType, previewUrl, file.Version));
+                var dto = new PortalFileDto(
+                    file.FileName, file.FileType, previewUrl, file.Version,
+                    file.IsActive, file.UploadedBy.ToString(), file.RejectionReason);
+                allFiles.Add(dto);
+                if (file.IsActive) activeFiles.Add(dto);
             }
 
             items.Add(new PortalOrderItemDto(
                 dr.Id, item.SKU, item.Quantity, item.Description,
-                dr.Type, dr.Status, dr.RejectionReason, dr.ApprovalToken, activeFiles
+                dr.Type, dr.Status, dr.RejectionReason, dr.ApprovalToken, activeFiles, allFiles
             ));
         }
 

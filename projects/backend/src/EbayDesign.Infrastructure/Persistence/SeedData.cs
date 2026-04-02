@@ -29,12 +29,36 @@ public static class SeedData
 
         if (!await context.SystemSettings.AnyAsync())
         {
+            context.SystemSettings.AddRange(
+                new SystemSetting
+                {
+                    Id = Guid.NewGuid(),
+                    Key = "portal.otp.required",
+                    Value = "true",
+                    Description = "Require OTP verification for customer portal access",
+                    CreatedDate = DateTime.UtcNow
+                },
+                new SystemSetting
+                {
+                    Id = Guid.NewGuid(),
+                    Key = "notification.emails",
+                    Value = "",
+                    Description = "Comma-separated email addresses to receive admin notifications",
+                    CreatedDate = DateTime.UtcNow
+                }
+            );
+            await context.SaveChangesAsync();
+        }
+
+        // Ensure notification.emails setting exists (for existing databases)
+        if (!await context.SystemSettings.AnyAsync(s => s.Key == "notification.emails"))
+        {
             context.SystemSettings.Add(new SystemSetting
             {
                 Id = Guid.NewGuid(),
-                Key = "portal.otp.required",
-                Value = "true",
-                Description = "Require OTP verification for customer portal access",
+                Key = "notification.emails",
+                Value = "",
+                Description = "Comma-separated email addresses to receive admin notifications",
                 CreatedDate = DateTime.UtcNow
             });
             await context.SaveChangesAsync();

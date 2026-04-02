@@ -1,3 +1,4 @@
+using EbayDesign.Application.Common.Helpers;
 using EbayDesign.Application.Common.Interfaces;
 using EbayDesign.Domain.Enums;
 using EbayDesign.Domain.Events;
@@ -15,15 +16,18 @@ public class DesignRejectedEventHandler : INotificationHandler<DesignRejectedEve
 {
     private readonly IApplicationDbContext _context;
     private readonly IEmailService _emailService;
+    private readonly IAppSettings _appSettings;
     private readonly ILogger<DesignRejectedEventHandler> _logger;
 
     public DesignRejectedEventHandler(
         IApplicationDbContext context,
         IEmailService emailService,
+        IAppSettings appSettings,
         ILogger<DesignRejectedEventHandler> logger)
     {
         _context = context;
         _emailService = emailService;
+        _appSettings = appSettings;
         _logger = logger;
     }
 
@@ -72,13 +76,14 @@ public class DesignRejectedEventHandler : INotificationHandler<DesignRejectedEve
                 items = items
             };
 
-            await _emailService.QueueAsync(
-                "DesignRejected",
-                model,
-                "admin@ebaydesign.co.uk",
-                $"Customer Requested Design Changes - Order {order.EbayOrderNo} ({rejectedItems.Count} items)",
-                "Order",
-                order.Id.ToString(),
+            var firstReason = rejectedItems.FirstOrDefault()?.RejectionReason;
+            await AdminNotificationHelper.SendAdminNotificationAsync(
+                _context, _emailService, _appSettings,
+                order.Id.ToString(), order.EbayOrderNo, order.Customer.CustomerName ?? "",
+                "Customer Requested Changes",
+                $"Customer has requested design changes for {rejectedItems.Count} item(s).",
+                rejectedItems.Count,
+                firstReason,
                 cancellationToken);
         }
         catch (Exception ex)

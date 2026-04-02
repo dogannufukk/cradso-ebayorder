@@ -1,0 +1,97 @@
+@{
+    ViewData["Title"] = "Create Order";
+}
+
+<div class="d-flex align-items-center mb-4">
+    <a href="/Order" class="btn btn-outline-secondary btn-sm me-3"><i class="bi bi-arrow-left"></i></a>
+    <h4 class="fw-bold mb-0">Create Order</h4>
+</div>
+
+<!-- Step Indicator -->
+<div class="step-indicator mb-4">
+    <div class="step active" id="step-ind-1">1. Customer</div>
+    <div class="step" id="step-ind-2">2. Order Info</div>
+    <div class="step" id="step-ind-3">3. Items</div>
+</div>
+
+<!-- Step 1: Customer -->
+<div class="wizard-step active" id="step-1">
+    <div class="card">
+        <div class="card-body">
+            <h6 class="fw-bold mb-3">Select or Create Customer</h6>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="customer-search" placeholder="Search customers by name or email..." />
+            </div>
+            <div id="customer-results" class="mb-3" style="max-height:250px; overflow-y:auto;"></div>
+            <div id="selected-customer" class="alert alert-success d-none">
+                <strong id="sel-customer-name"></strong> - <span id="sel-customer-email"></span>
+                <button type="button" class="btn btn-sm btn-outline-danger float-end" id="clear-customer">Change</button>
+            </div>
+            <hr />
+            <a href="#" id="toggle-new-customer" class="text-decoration-none"><i class="bi bi-plus-circle me-1"></i> Create new customer</a>
+            <div id="new-customer-form" class="d-none mt-3">
+                <div class="row g-3">
+                    <div class="col-md-6"><label class="form-label">Customer Name</label><input type="text" class="form-control" id="nc-name" /></div>
+                    <div class="col-md-6"><label class="form-label">Company Name</label><input type="text" class="form-control" id="nc-company" /></div>
+                    <div class="col-md-6"><label class="form-label">Email <span class="text-danger">*</span></label><input type="email" class="form-control" id="nc-email" required /></div>
+                    <div class="col-md-6"><label class="form-label">Mobile Phone</label><input type="text" class="form-control" id="nc-mobile" /></div>
+                    <div class="col-md-6"><label class="form-label">Phone</label><input type="text" class="form-control" id="nc-phone" /></div>
+                    <div class="col-md-6"><label class="form-label">Address Line 1</label><input type="text" class="form-control" id="nc-addr1" /></div>
+                    <div class="col-md-6"><label class="form-label">Address Line 2</label><input type="text" class="form-control" id="nc-addr2" /></div>
+                    <div class="col-md-6"><label class="form-label">City</label><input type="text" class="form-control" id="nc-city" /></div>
+                    <div class="col-md-6"><label class="form-label">County</label><input type="text" class="form-control" id="nc-county" /></div>
+                    <div class="col-md-6"><label class="form-label">PostCode</label><input type="text" class="form-control" id="nc-postcode" /></div>
+                    <div class="col-md-6">
+                        <label class="form-label">Country</label>
+                        <input type="text" class="form-control" id="nc-country" value="United Kingdom" />
+                    </div>
+                </div>
+                <button class="btn btn-success mt-3" id="create-customer-btn"><i class="bi bi-check-lg me-1"></i> Create Customer</button>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <a href="/Order" class="btn btn-outline-secondary">Cancel</a>
+            <button class="btn btn-primary" id="step1-next" disabled>Next <i class="bi bi-arrow-right"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- Step 2: Order Info -->
+<div class="wizard-step" id="step-2">
+    <div class="card">
+        <div class="card-body">
+            <h6 class="fw-bold mb-3">Order Information</h6>
+            <div class="mb-3">
+                <label class="form-label">eBay Order No <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="ebay-order-no" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" id="order-notes" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <button class="btn btn-outline-secondary" id="step2-back"><i class="bi bi-arrow-left me-1"></i> Back</button>
+            <button class="btn btn-primary" id="step2-next">Next <i class="bi bi-arrow-right"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- Step 3: Items -->
+<div class="wizard-step" id="step-3">
+    <div class="card">
+        <div class="card-body">
+            <h6 class="fw-bold mb-3">Order Items</h6>
+            <div id="items-container"></div>
+            <button class="btn btn-outline-primary btn-sm mt-2" id="add-item"><i class="bi bi-plus-lg me-1"></i> Add Item</button>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <button class="btn btn-outline-secondary" id="step3-back"><i class="bi bi-arrow-left me-1"></i> Back</button>
+            <button class="btn btn-success" id="create-order-btn"><i class="bi bi-check-lg me-1"></i> Create Order</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="~/js/pages/order-create.js"></script>
+}

@@ -1,0 +1,66 @@
+@using EbayDesign.Application.Features.Customers.Queries.GetCustomerById
+@model CustomerDetailDto
+@{
+    ViewData["Title"] = Model.CustomerName ?? Model.CompanyName ?? "Customer";
+}
+
+<div class="d-flex align-items-center mb-4">
+    <a href="/Customer" class="btn btn-outline-secondary btn-sm me-3"><i class="bi bi-arrow-left"></i></a>
+    <div class="flex-grow-1">
+        <h4 class="fw-bold mb-0">@(Model.CustomerName ?? Model.CompanyName ?? "Customer")</h4>
+        <small class="text-muted">Joined @Model.CreatedDate.ToString("dd MMM yyyy") | @Model.OrderCount order(s)</small>
+    </div>
+    <div>
+        <button class="btn btn-outline-primary btn-sm" id="btn-edit"><i class="bi bi-pencil me-1"></i>Edit</button>
+        @if (Model.OrderCount == 0)
+        {
+            <button class="btn btn-outline-danger btn-sm ms-1" id="btn-delete"><i class="bi bi-trash me-1"></i>Delete</button>
+        }
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <!-- View Mode -->
+        <div id="view-mode">
+            <div class="row g-3">
+                <div class="col-md-6"><label class="text-muted small">Customer Name</label><div>@(Model.CustomerName ?? "-")</div></div>
+                <div class="col-md-6"><label class="text-muted small">Company Name</label><div>@(Model.CompanyName ?? "-")</div></div>
+                <div class="col-md-6"><label class="text-muted small">Email</label><div>@Model.Email</div></div>
+                <div class="col-md-6"><label class="text-muted small">Mobile Phone</label><div>@(Model.MobilePhone ?? "-")</div></div>
+                <div class="col-md-6"><label class="text-muted small">Landline</label><div>@(Model.Phone ?? "-")</div></div>
+                <div class="col-md-6"><label class="text-muted small">Address Line 1</label><div>@(Model.AddressLine1 ?? "-")</div></div>
+                <div class="col-md-6"><label class="text-muted small">Address Line 2</label><div>@(Model.AddressLine2 ?? "-")</div></div>
+                <div class="col-md-6"><label class="text-muted small">Town/City</label><div>@(Model.City ?? "-")</div></div>
+                <div class="col-md-6"><label class="text-muted small">County</label><div>@(Model.County ?? "-")</div></div>
+                <div class="col-md-6"><label class="text-muted small">Postcode</label><div>@(Model.PostCode ?? "-")</div></div>
+                <div class="col-md-6"><label class="text-muted small">Country</label><div>@(Model.Country ?? "-")</div></div>
+            </div>
+        </div>
+        <!-- Edit Mode -->
+        <div id="edit-mode" class="d-none">
+            <div class="row g-3">
+                <div class="col-md-6"><label class="form-label">Customer Name</label><input type="text" class="form-control" id="e-name" value="@Model.CustomerName" /></div>
+                <div class="col-md-6"><label class="form-label">Company Name</label><input type="text" class="form-control" id="e-company" value="@Model.CompanyName" /></div>
+                <div class="col-md-6"><label class="form-label">Email <span class="text-danger">*</span></label><input type="email" class="form-control" id="e-email" value="@Model.Email" /></div>
+                <div class="col-md-6"><label class="form-label">Mobile Phone</label><input type="text" class="form-control" id="e-mobile" value="@Model.MobilePhone" /></div>
+                <div class="col-md-6"><label class="form-label">Landline</label><input type="text" class="form-control" id="e-phone" value="@Model.Phone" /></div>
+                <div class="col-md-6"><label class="form-label">Address Line 1</label><input type="text" class="form-control" id="e-addr1" value="@Model.AddressLine1" /></div>
+                <div class="col-md-6"><label class="form-label">Address Line 2</label><input type="text" class="form-control" id="e-addr2" value="@Model.AddressLine2" /></div>
+                <div class="col-md-6"><label class="form-label">Town/City</label><input type="text" class="form-control" id="e-city" value="@Model.City" /></div>
+                <div class="col-md-6"><label class="form-label">County</label><input type="text" class="form-control" id="e-county" value="@Model.County" /></div>
+                <div class="col-md-6"><label class="form-label">Postcode</label><input type="text" class="form-control" id="e-postcode" value="@Model.PostCode" /></div>
+                <div class="col-md-6"><label class="form-label">Country</label><input type="text" class="form-control" id="e-country" value="@Model.Country" /></div>
+            </div>
+            <div class="mt-3">
+                <button class="btn btn-primary btn-sm" id="btn-save"><i class="bi bi-check-lg me-1"></i>Save</button>
+                <button class="btn btn-outline-secondary btn-sm" id="btn-cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="~/js/pages/customer-detail.js"></script>
+<script>var CUSTOMER_ID = '@Model.Id';</script>
+}

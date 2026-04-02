@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Settings";
+}
+
+<h4 class="fw-bold mb-4">Settings</h4>
+
+<!-- OTP Setting -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h6 class="mb-1">Require OTP Verification</h6>
+                <p class="text-muted small mb-0">When enabled, customers must verify via email OTP before accessing the design portal</p>
+            </div>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="otp-toggle" style="width:3em; height:1.5em;" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Notification Emails -->
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white">
+        <h6 class="mb-0 fw-bold"><i class="bi bi-envelope me-2"></i>Notification Email Addresses</h6>
+    </div>
+    <div class="card-body">
+        <p class="text-muted small mb-3">Add email addresses that will receive notifications when customers take actions (upload files, approve/reject designs, etc.). Leave empty to disable admin notifications.</p>
+
+        <div class="mb-3">
+            <div class="input-group">
+                <input type="email" class="form-control" id="new-email-input" placeholder="Enter email address..." />
+                <button class="btn btn-primary" id="btn-add-email"><i class="bi bi-plus-lg me-1"></i>Add</button>
+            </div>
+        </div>
+
+        <div id="email-chips" class="d-flex flex-wrap gap-2 mb-3"></div>
+
+        <div id="no-emails-msg" class="text-muted small d-none">
+            <i class="bi bi-info-circle me-1"></i>No notification emails configured. Admin notifications are disabled.
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="~/js/pages/settings.js"></script>
+}

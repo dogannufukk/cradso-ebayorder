@@ -37,6 +37,7 @@ public static class DependencyInjection
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IRoyalMailService, MockRoyalMailService>();
         services.AddScoped<ITokenService, JwtTokenService>();
+        services.AddSingleton<IAppSettings, AppSettings>();
 
         return services;
     }

@@ -11,15 +11,18 @@ public class OrderSubmittedEmailHandler : INotificationHandler<OrderStatusChange
 {
     private readonly IApplicationDbContext _context;
     private readonly IEmailService _emailService;
+    private readonly IAppSettings _appSettings;
     private readonly ILogger<OrderSubmittedEmailHandler> _logger;
 
     public OrderSubmittedEmailHandler(
         IApplicationDbContext context,
         IEmailService emailService,
+        IAppSettings appSettings,
         ILogger<OrderSubmittedEmailHandler> logger)
     {
         _context = context;
         _emailService = emailService;
+        _appSettings = appSettings;
         _logger = logger;
     }
 
@@ -39,18 +42,14 @@ public class OrderSubmittedEmailHandler : INotificationHandler<OrderStatusChange
         var customer = order.Customer;
         if (string.IsNullOrWhiteSpace(customer.Email)) return;
 
-        var baseUrl = "http://localhost:5177";
-
         var customerUploadRequests = order.DesignRequests
             .Where(dr => dr.Type == DesignRequestType.CustomerUpload)
             .ToList();
 
         if (customerUploadRequests.Count == 0) return;
 
-        // Use the first design request's token as the portal entry point
-        // (portal shows all items for the order via this token)
         var firstToken = customerUploadRequests.First().ApprovalToken;
-        var portalUrl = $"{baseUrl}/portal/design/{firstToken}";
+        var portalUrl = $"{_appSettings.BaseUrl}/Portal/Design/{firstToken}";
 
         // Build items list for the template
         var items = customerUploadRequests.Select(dr =>
@@ -85,5 +84,14 @@ public class OrderSubmittedEmailHandler : INotificationHandler<OrderStatusChange
         _logger.LogInformation(
             "Single consolidated upload request email queued for order {OrderId} with {ItemCount} items.",
             order.Id, customerUploadRequests.Count);
+
+        // Admin notification
+        await Common.Helpers.AdminNotificationHelper.SendAdminNotificationAsync(
+            _context, _emailService, _appSettings,
+            order.Id.ToString(), order.EbayOrderNo, customer.CustomerName ?? "",
+            "Order Submitted",
+            $"A new order has been submitted and design upload request sent to customer.",
+            customerUploadRequests.Count,
+            cancellationToken: cancellationToken);
     }
 }

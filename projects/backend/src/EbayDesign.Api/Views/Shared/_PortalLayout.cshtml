@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] - CRADSO Design Portal</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body class="bg-light">
+    <!-- Header -->
+    <header class="bg-white border-bottom shadow-sm">
+        <div class="container py-3">
+            <h5 class="mb-0 fw-bold text-primary">CRADSO</h5>
+            <small class="text-muted">Design Portal</small>
+        </div>
+    </header>
+
+    <!-- Content -->
+    <div class="container py-4" style="max-width: 800px;">
+        @RenderBody()
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 mt-5">
+        <div class="container text-center text-muted">
+            <small>&copy; @DateTime.Now.Year CRADSO. All rights reserved.</small>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="~/js/site.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

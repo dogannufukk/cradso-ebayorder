@@ -1,0 +1,162 @@
+@using EbayDesign.Application.Features.Orders.Queries.GetOrderById
+@model OrderDetailDto
+@{
+    ViewData["Title"] = "Order " + Model.EbayOrderNo;
+}
+
+<div class="d-flex align-items-center mb-4">
+    <a href="/Order" class="btn btn-outline-secondary btn-sm me-3"><i class="bi bi-arrow-left"></i></a>
+    <div class="flex-grow-1">
+        <h4 class="fw-bold mb-0" id="order-title">@Model.EbayOrderNo</h4>
+        <small class="text-muted">Created @Model.CreatedDate.ToString("dd MMM yyyy HH:mm")</small>
+    </div>
+    <span id="order-status-badge"></span>
+</div>
+
+<!-- Status Timeline -->
+<div class="status-timeline mb-4" id="status-timeline"></div>
+
+<!-- Order Info -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-bold">Order Details</h6>
+        <div id="edit-buttons"></div>
+    </div>
+    <div class="card-body">
+        <!-- View Mode -->
+        <div id="view-mode">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <div class="text-muted small mb-1">eBay Order No</div>
+                        <div class="fw-bold" id="display-ebay-no">@Model.EbayOrderNo</div>
+                    </div>
+                    <div>
+                        <div class="text-muted small mb-1">Notes</div>
+                        <div id="display-notes">@(Model.Notes ?? "-")</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <div class="text-muted small mb-1">Customer</div>
+                        <div class="fw-medium"><a href="/Customer/Detail/@Model.Customer.Id" class="text-decoration-none">@Model.Customer.CustomerName</a></div>
+                        <div class="text-muted small">@Model.Customer.Email</div>
+                    </div>
+                    <div>
+                        <div class="text-muted small mb-1">Created</div>
+                        <div>@Model.CreatedDate.ToString("dd MMM yyyy HH:mm")</div>
+                    </div>
+                </div>
+                <div class="col-md-4" id="shipment-col">
+                    @if (Model.Shipment != null)
+                    {
+                        <div class="p-3 rounded" style="background:#f0fdf4;border:1px solid #bbf7d0">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <i class="bi bi-truck text-success"></i>
+                                <strong class="small text-success">Shipment</strong>
+                            </div>
+                            <div class="row mb-1">
+                                <div class="col-5 text-muted small">Tracking</div>
+                                <div class="col-7 fw-medium small">@Model.Shipment.TrackingNumber</div>
+                            </div>
+                            <div class="row mb-1">
+                                <div class="col-5 text-muted small">Carrier</div>
+                                <div class="col-7 small">@Model.Shipment.Carrier</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 text-muted small">Shipped</div>
+                                <div class="col-7 small">@Model.Shipment.ShipmentDate.ToString("dd MMM yyyy")</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <!-- Edit Mode -->
+        <div id="edit-mode" class="d-none">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">eBay Order No</label>
+                    <input type="text" class="form-control" id="edit-ebay-no" value="@Model.EbayOrderNo" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Notes</label>
+                    <textarea class="form-control" id="edit-notes" rows="3">@Model.Notes</textarea>
+                </div>
+            </div>
+            <div class="mt-3">
+                <button class="btn btn-primary btn-sm" id="btn-save-order"><i class="bi bi-check-lg me-1"></i>Save</button>
+                <button class="btn btn-outline-secondary btn-sm" id="btn-cancel-edit">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Items -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-bold">Items</h6>
+        <div id="items-header-actions"></div>
+    </div>
+    <div class="card-body p-0" id="items-card-body"></div>
+</div>
+
+<!-- Status Actions -->
+<div id="status-actions" class="mb-4"></div>
+
+<!-- Design Management Section (loaded via AJAX for non-draft orders) -->
+<div id="design-section"></div>
+
+<!-- Ship Order Modal -->
+<div class="modal fade" id="shipModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ship Order</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Tracking Number <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="ship-tracking" />
+                </div>
+                <input type="hidden" id="ship-delivery-type" value="0" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btn-ship-confirm">Ship Order</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reject Design Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Reject Design</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Rejection Reason <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="reject-reason" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="btn-reject-confirm">Reject</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    var ORDER_ID = '@Model.Id';
+    var ORDER_STATUS_VAL = @((int)Model.Status);
+    var ORDER_DATA = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model, new System.Text.Json.JsonSerializerOptions { PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase }));
+</script>
+<script src="~/js/pages/order-detail.js"></script>
+}

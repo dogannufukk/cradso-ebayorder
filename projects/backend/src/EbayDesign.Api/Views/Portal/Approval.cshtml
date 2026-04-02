@@ -1,0 +1,38 @@
+@{
+    Layout = "_PortalLayout";
+    ViewData["Title"] = "Design Approval";
+}
+
+<div id="loading-state" class="text-center py-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-2 text-muted">Loading your order...</p>
+</div>
+
+<div id="content" class="d-none">
+    <!-- Order Header -->
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="fw-bold mb-1" id="portal-customer"></h5>
+                    <p class="text-muted mb-0">Order: <span id="portal-order-no" class="fw-medium"></span> | <span id="portal-item-count"></span> item(s)</p>
+                </div>
+                <span id="all-approved-badge" class="badge bg-success d-none">All Approved</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Item Cards -->
+    <div id="item-cards"></div>
+
+    <!-- Action Buttons -->
+    <div id="action-buttons" class="mt-4"></div>
+</div>
+
+<!-- Toast Container -->
+<div id="portal-toast" class="position-fixed top-0 end-0 p-3" style="z-index: 9999;"></div>
+
+@section Scripts {
+<script>var PORTAL_TOKEN = '@ViewBag.Token';</script>
+<script src="~/js/pages/portal-approval.js"></script>
+}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { designsApi } from '../../api/endpoints/designs';
-import type { DesignRequestDto, DesignFileDto } from '../../api/endpoints/designs';
+import type { DesignRequestDto } from '../../api/endpoints/designs';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
 import {
   DESIGN_TYPE_LABELS,

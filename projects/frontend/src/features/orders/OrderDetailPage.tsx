@@ -115,15 +115,6 @@ export default function OrderDetailPage() {
     onError: (err: any) => { setError(err.response?.data?.errors?.[0] || 'Upload failed'); setSuccess(''); },
   });
 
-  const submitMutation = useMutation({
-    mutationFn: (designId: string) => designsApi.submitForApproval(designId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['designs', id] });
-      setSuccess('Submitted for customer approval.');
-    },
-    onError: (err: any) => setError(err.response?.data?.errors?.[0] || 'Submit failed'),
-  });
-
   const approveMutation = useMutation({
     mutationFn: (designId: string) => designsApi.approve(designId),
     onSuccess: () => {
@@ -741,8 +732,8 @@ function DesignRequestCard({
   onSetPrintDecision,
   onUpload,
   onDeleteFile,
-  onApprove,
-  onReject,
+  onApprove: _onApprove,
+  onReject: _onReject,
   isUploading,
 }: {
   dr: DesignRequestDto;

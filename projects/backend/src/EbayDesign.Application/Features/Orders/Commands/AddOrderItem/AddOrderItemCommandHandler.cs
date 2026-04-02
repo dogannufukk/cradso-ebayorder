@@ -27,6 +27,7 @@ public class AddOrderItemCommandHandler : IRequestHandler<AddOrderItemCommand, G
 
         var orderItem = new OrderItem
         {
+            Id = Guid.NewGuid(),
             OrderId = order.Id,
             SKU = request.SKU,
             Quantity = request.Quantity,

@@ -1,0 +1,67 @@
+@{
+    ViewData["Title"] = "Reports";
+}
+
+<h4 class="fw-bold mb-4">Reports</h4>
+
+<!-- Tabs -->
+<ul class="nav nav-tabs mb-4" id="reportTabs" role="tablist">
+    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#tab-orders">Order Status</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-design">Design Performance</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-email">Email Delivery</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-timeline">Timeline</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#tab-production">Production</a></li>
+</ul>
+
+<div id="report-loading" class="text-center py-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-2 text-muted">Loading report data...</p>
+</div>
+
+<div class="tab-content d-none" id="reportContent">
+    <!-- Tab 1: Order Status -->
+    <div class="tab-pane fade show active" id="tab-orders">
+        <div class="row g-3 mb-4" id="order-kpis"></div>
+        <div class="row g-4">
+            <div class="col-md-5"><div class="card border-0 shadow-sm"><div class="card-header bg-white"><h6 class="mb-0 fw-bold">Status Distribution</h6></div><div class="card-body"><canvas id="chart-order-status" height="260"></canvas></div></div></div>
+            <div class="col-md-7"><div class="card border-0 shadow-sm"><div class="card-header bg-white"><h6 class="mb-0 fw-bold">Orders - Last 30 Days</h6></div><div class="card-body"><canvas id="chart-order-trend" height="260"></canvas></div></div></div>
+        </div>
+    </div>
+
+    <!-- Tab 2: Design Performance -->
+    <div class="tab-pane fade" id="tab-design">
+        <div class="row g-3 mb-4" id="design-kpis"></div>
+        <div class="row g-4">
+            <div class="col-md-6"><div class="card border-0 shadow-sm"><div class="card-header bg-white"><h6 class="mb-0 fw-bold">Design Status Distribution</h6></div><div class="card-body"><canvas id="chart-design-status" height="280"></canvas></div></div></div>
+            <div class="col-md-6"><div class="card border-0 shadow-sm"><div class="card-header bg-white"><h6 class="mb-0 fw-bold">Rejection Rates</h6></div><div class="card-body"><canvas id="chart-rejection" height="280"></canvas></div></div></div>
+        </div>
+    </div>
+
+    <!-- Tab 4: Email Delivery -->
+    <div class="tab-pane fade" id="tab-email">
+        <div class="row g-3 mb-4" id="email-kpis"></div>
+        <div class="row g-4">
+            <div class="col-md-5"><div class="card border-0 shadow-sm"><div class="card-header bg-white"><h6 class="mb-0 fw-bold">Email Status</h6></div><div class="card-body"><canvas id="chart-email-status" height="260"></canvas></div></div></div>
+            <div class="col-md-7"><div class="card border-0 shadow-sm"><div class="card-header bg-white"><h6 class="mb-0 fw-bold">Emails by Template</h6></div><div class="card-body"><canvas id="chart-email-template" height="260"></canvas></div></div></div>
+        </div>
+    </div>
+
+    <!-- Tab 5: Timeline -->
+    <div class="tab-pane fade" id="tab-timeline">
+        <div class="card border-0 shadow-sm"><div class="card-header bg-white"><h6 class="mb-0 fw-bold">Monthly Order Trend (Last 6 Months)</h6></div><div class="card-body"><canvas id="chart-timeline" height="300"></canvas></div></div>
+    </div>
+
+    <!-- Tab 6: Production -->
+    <div class="tab-pane fade" id="tab-production">
+        <div class="row g-3 mb-4" id="production-kpis"></div>
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white"><h6 class="mb-0 fw-bold">Orders Awaiting Production / Shipment</h6></div>
+            <div class="card-body p-0"><div class="table-responsive" id="production-table"></div></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script src="~/lib/chartjs/chart.umd.min.js"></script>
+<script src="~/js/pages/report.js"></script>
+}

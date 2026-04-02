@@ -1,0 +1,39 @@
+@{
+    Layout = "_PortalLayout";
+    ViewData["Title"] = "Verify Your Identity";
+}
+
+<div class="text-center py-5">
+    <div class="mb-4">
+        <i class="bi bi-envelope-check" style="font-size: 3rem; color: #3b82f6;"></i>
+    </div>
+    <h4 class="fw-bold">Verify Your Identity</h4>
+    <p class="text-muted" id="otp-message">We've sent a verification code to your email</p>
+    <p class="fw-medium" id="masked-email"></p>
+
+    <!-- OTP Input -->
+    <div class="d-flex justify-content-center gap-2 my-4" id="otp-inputs">
+        <input type="text" class="otp-input" maxlength="1" data-idx="0" inputmode="numeric" />
+        <input type="text" class="otp-input" maxlength="1" data-idx="1" inputmode="numeric" />
+        <input type="text" class="otp-input" maxlength="1" data-idx="2" inputmode="numeric" />
+        <input type="text" class="otp-input" maxlength="1" data-idx="3" inputmode="numeric" />
+        <input type="text" class="otp-input" maxlength="1" data-idx="4" inputmode="numeric" />
+        <input type="text" class="otp-input" maxlength="1" data-idx="5" inputmode="numeric" />
+    </div>
+
+    <div id="otp-error" class="text-danger mb-3 d-none"></div>
+
+    <div id="countdown-area">
+        <p class="text-muted small">Resend code in <span id="countdown" class="fw-bold">60</span>s</p>
+    </div>
+    <button class="btn btn-link d-none" id="btn-resend">Resend Code</button>
+
+    <div id="otp-loading" class="d-none">
+        <div class="spinner-border spinner-border-sm text-primary"></div> Verifying...
+    </div>
+</div>
+
+@section Scripts {
+<script>var PORTAL_TOKEN = '@ViewBag.Token';</script>
+<script src="~/js/pages/portal-otp.js"></script>
+}

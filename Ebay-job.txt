@@ -1,0 +1,39 @@
+Ebay:
+
+-> 3 tane tasarım opsiyonu
+-> Müşteri tasarım gönder, 
+-> bizden tasarım isteyecek
+-> hazır template
+
+-> Müşteri tasarım gönderecek şekilde olacak ->
+
+
+mail gönderilecek
+sipariş bilgilerini kendi sistemimize gireceğiz - ebaysipariş no - ürünkodu girilecek: sku
+eposta bilgisi sonradan da girilebilir
+müşteri bilgileri
+	- CustomerName 
+        - firma adı
+	- mail
+	- mobile phone number
+	- sabit phone number
+	- 2 adres inputu adresline
+	- town/city 1
+	- county    2
+	- 1 post code
+	- country
+	
+-----> eticarette - post kodda adres bilgiisi bulma
+
+pdf, jpg, psd,ai,tiff
+
+-> baskı yüklenecek - baskı onay süreci okey, değilse ret nedenleri
+-> okeylenme süreci
+-> okeylenince
+->>> son onay görseli gönderilecek
+-> onayladıktan sonra
+
+---> üretimde, kargolandı - royal-main tracking48 entegrasyon kargo takip
+
+
+-> next business day

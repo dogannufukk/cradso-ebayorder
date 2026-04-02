@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { ordersApi } from '../../api/endpoints/orders';
@@ -21,7 +21,7 @@ export default function OrderCreatePage() {
   // Step 1: Customer
   const [customerSearch, setCustomerSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
-  const debounceTimer = useRef<ReturnType<typeof setTimeout>>();
+  const debounceTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const [selectedCustomerId, setSelectedCustomerId] = useState('');
   const [showNewCustomer, setShowNewCustomer] = useState(false);
   const [newCustomer, setNewCustomer] = useState({
@@ -176,7 +176,7 @@ export default function OrderCreatePage() {
                   {customers.items.map(c => (
                     <button
                       key={c.id}
-                      onClick={() => { setSelectedCustomerId(c.id); setCustomerSearch(c.customerName); }}
+                      onClick={() => { setSelectedCustomerId(c.id ?? ''); setCustomerSearch(c.customerName ?? ''); }}
                       className="w-full text-left px-3 py-2 hover:bg-blue-50 text-sm flex items-center gap-2"
                     >
                       <span className="font-medium">{c.customerName}</span>

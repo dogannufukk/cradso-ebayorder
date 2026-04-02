@@ -1,0 +1,128 @@
+@using EbayDesign.Application.Features.Dashboard.Queries.GetDashboardSummary
+@model DashboardSummaryDto
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h4 class="fw-bold mb-4">Dashboard</h4>
+
+<!-- Status Cards -->
+<div class="row g-3 mb-4">
+    @{
+        var statusCards = new[] {
+            new { Label = "Draft", Count = Model.DraftOrders, Status = 0, Icon = "bi-pencil-square", Color = "#6b7280", Gradient = "linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%)", Border = "#e5e7eb" },
+            new { Label = "Waiting Design", Count = Model.WaitingDesignOrders, Status = 1, Icon = "bi-clock-history", Color = "#d97706", Gradient = "linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)", Border = "#fde68a" },
+            new { Label = "In Design", Count = Model.InDesignOrders, Status = 2, Icon = "bi-palette", Color = "#2563eb", Gradient = "linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)", Border = "#93c5fd" },
+            new { Label = "Waiting Approval", Count = Model.WaitingApprovalOrders, Status = 3, Icon = "bi-hourglass-split", Color = "#9333ea", Gradient = "linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)", Border = "#d8b4fe" },
+            new { Label = "Approved", Count = Model.ApprovedOrders, Status = 4, Icon = "bi-check-circle", Color = "#059669", Gradient = "linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)", Border = "#6ee7b7" },
+            new { Label = "Rejected", Count = Model.RejectedOrders, Status = 5, Icon = "bi-x-circle", Color = "#dc2626", Gradient = "linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)", Border = "#fca5a5" },
+            new { Label = "In Production", Count = Model.InProductionOrders, Status = 6, Icon = "bi-gear", Color = "#0891b2", Gradient = "linear-gradient(135deg, #ecfeff 0%, #cffafe 100%)", Border = "#67e8f9" },
+            new { Label = "Shipped", Count = Model.ShippedOrders, Status = 7, Icon = "bi-truck", Color = "#16a34a", Gradient = "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)", Border = "#86efac" },
+        };
+    }
+    @foreach (var card in statusCards)
+    {
+        <div class="col-6 col-lg-3">
+            <a href="/Order?status=@card.Status" class="text-decoration-none">
+                <div class="dash-stat-card" style="background:@card.Gradient; border:1px solid @card.Border;">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="dash-stat-count" style="color:@card.Color">@card.Count</div>
+                            <div class="dash-stat-label">@card.Label</div>
+                        </div>
+                        <div class="dash-stat-icon" style="color:@card.Color; background:rgba(255,255,255,0.7);">
+                            <i class="bi @card.Icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+
+<!-- Summary Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="dash-summary-card">
+            <div class="dash-summary-icon" style="background:#eff6ff;color:#2563eb"><i class="bi bi-bag"></i></div>
+            <div>
+                <div class="dash-summary-count">@Model.TotalOrders</div>
+                <div class="dash-summary-label">Total Orders</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="dash-summary-card">
+            <div class="dash-summary-icon" style="background:#f0fdf4;color:#16a34a"><i class="bi bi-people"></i></div>
+            <div>
+                <div class="dash-summary-count">@Model.TotalCustomers</div>
+                <div class="dash-summary-label">Total Customers</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="dash-summary-card">
+            <div class="dash-summary-icon" style="background:#fffbeb;color:#d97706"><i class="bi bi-palette2"></i></div>
+            <div>
+                <div class="dash-summary-count" style="color:#d97706">@Model.PendingDesignRequests</div>
+                <div class="dash-summary-label">Pending Designs</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Orders -->
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h6 class="mb-0 fw-bold">Recent Orders</h6>
+        <a href="/Order" class="small text-decoration-none">View all <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>eBay Order No</th>
+                        <th>Customer</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.RecentOrders != null && Model.RecentOrders.Any())
+                    {
+                        @foreach (var order in Model.RecentOrders)
+                        {
+                            <tr style="cursor:pointer" onclick="window.location='/Order/Detail/@order.Id'">
+                                <td><a href="/Order/Detail/@order.Id" class="text-decoration-none fw-medium">@order.EbayOrderNo</a></td>
+                                <td>@order.CustomerName</td>
+                                <td><span class="badge" id="status-@order.Id">@order.Status</span></td>
+                                <td>@order.CreatedDate.ToString("dd MMM yyyy")</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr><td colspan="4" class="text-center text-muted py-4">No orders yet</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+$(function() {
+    @if (Model.RecentOrders != null)
+    {
+        @foreach (var order in Model.RecentOrders)
+        {
+            <text>
+            $('#status-@order.Id').replaceWith(renderBadge(@order.Status, ORDER_STATUS));
+            </text>
+        }
+    }
+});
+</script>
+}
