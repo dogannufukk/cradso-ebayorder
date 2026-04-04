@@ -1,13 +1,13 @@
 @using EbayDesign.Application.Features.Customers.Queries.GetCustomerById
 @model CustomerDetailDto
 @{
-    ViewData["Title"] = Model.CustomerName ?? Model.CompanyName ?? "Customer";
+    ViewData["Title"] = Model.CustomerName ?? Model.EbayUsername ?? "Customer";
 }
 
 <div class="d-flex align-items-center mb-4">
     <a href="/Customer" class="btn btn-outline-secondary btn-sm me-3"><i class="bi bi-arrow-left"></i></a>
     <div class="flex-grow-1">
-        <h4 class="fw-bold mb-0">@(Model.CustomerName ?? Model.CompanyName ?? "Customer")</h4>
+        <h4 class="fw-bold mb-0">@(Model.CustomerName ?? Model.EbayUsername ?? "Customer")</h4>
         <small class="text-muted">Joined @Model.CreatedDate.ToString("dd MMM yyyy") | @Model.OrderCount order(s)</small>
     </div>
     <div>
@@ -25,12 +25,11 @@
         <div id="view-mode">
             <div class="row g-3">
                 <div class="col-md-6"><label class="text-muted small">Customer Name</label><div>@(Model.CustomerName ?? "-")</div></div>
-                <div class="col-md-6"><label class="text-muted small">Company Name</label><div>@(Model.CompanyName ?? "-")</div></div>
+                <div class="col-md-6"><label class="text-muted small">eBay Username</label><div>@(Model.EbayUsername ?? "-")</div></div>
                 <div class="col-md-6"><label class="text-muted small">Email</label><div>@Model.Email</div></div>
-                <div class="col-md-6"><label class="text-muted small">Mobile Phone</label><div>@(Model.MobilePhone ?? "-")</div></div>
-                <div class="col-md-6"><label class="text-muted small">Landline</label><div>@(Model.Phone ?? "-")</div></div>
-                <div class="col-md-6"><label class="text-muted small">Address Line 1</label><div>@(Model.AddressLine1 ?? "-")</div></div>
-                <div class="col-md-6"><label class="text-muted small">Address Line 2</label><div>@(Model.AddressLine2 ?? "-")</div></div>
+                <div class="col-md-6"><label class="text-muted small">Phone</label><div>@(Model.Phone ?? "-")</div></div>
+                <div class="col-12"><label class="text-muted small">Address Line 1</label><div>@(Model.AddressLine1 ?? "-")</div></div>
+                <div class="col-12"><label class="text-muted small">Address Line 2</label><div>@(Model.AddressLine2 ?? "-")</div></div>
                 <div class="col-md-6"><label class="text-muted small">Town/City</label><div>@(Model.City ?? "-")</div></div>
                 <div class="col-md-6"><label class="text-muted small">County</label><div>@(Model.County ?? "-")</div></div>
                 <div class="col-md-6"><label class="text-muted small">Postcode</label><div>@(Model.PostCode ?? "-")</div></div>
@@ -41,12 +40,11 @@
         <div id="edit-mode" class="d-none">
             <div class="row g-3">
                 <div class="col-md-6"><label class="form-label">Customer Name</label><input type="text" class="form-control" id="e-name" value="@Model.CustomerName" /></div>
-                <div class="col-md-6"><label class="form-label">Company Name</label><input type="text" class="form-control" id="e-company" value="@Model.CompanyName" /></div>
+                <div class="col-md-6"><label class="form-label">eBay Username</label><input type="text" class="form-control" id="e-ebayuser" value="@Model.EbayUsername" /></div>
                 <div class="col-md-6"><label class="form-label">Email <span class="text-danger">*</span></label><input type="email" class="form-control" id="e-email" value="@Model.Email" /></div>
-                <div class="col-md-6"><label class="form-label">Mobile Phone</label><input type="text" class="form-control" id="e-mobile" value="@Model.MobilePhone" /></div>
-                <div class="col-md-6"><label class="form-label">Landline</label><input type="text" class="form-control" id="e-phone" value="@Model.Phone" /></div>
-                <div class="col-md-6"><label class="form-label">Address Line 1</label><input type="text" class="form-control" id="e-addr1" value="@Model.AddressLine1" /></div>
-                <div class="col-md-6"><label class="form-label">Address Line 2</label><input type="text" class="form-control" id="e-addr2" value="@Model.AddressLine2" /></div>
+                <div class="col-md-6"><label class="form-label">Phone</label><input type="text" class="form-control" id="e-phone" value="@Model.Phone" /></div>
+                <div class="col-12"><label class="form-label">Address Line 1</label><input type="text" class="form-control" id="e-addr1" value="@Model.AddressLine1" /></div>
+                <div class="col-12"><label class="form-label">Address Line 2</label><input type="text" class="form-control" id="e-addr2" value="@Model.AddressLine2" /></div>
                 <div class="col-md-6"><label class="form-label">Town/City</label><input type="text" class="form-control" id="e-city" value="@Model.City" /></div>
                 <div class="col-md-6"><label class="form-label">County</label><input type="text" class="form-control" id="e-county" value="@Model.County" /></div>
                 <div class="col-md-6"><label class="form-label">Postcode</label><input type="text" class="form-control" id="e-postcode" value="@Model.PostCode" /></div>

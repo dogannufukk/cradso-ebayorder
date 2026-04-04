@@ -33,7 +33,7 @@ public class GetOrderByIdQueryHandler : IRequestHandler<GetOrderByIdQuery, Order
             order.Notes,
             order.CreatedDate,
             new CustomerSummaryDto(order.Customer.Id, order.Customer.CustomerName, order.Customer.Email),
-            order.Items.Select(i => new OrderItemDetailDto(i.Id, i.SKU, i.Quantity, i.Description)).ToList(),
+            order.Items.Select(i => new OrderItemDetailDto(i.Id, i.SKU, i.EbayProductCode, i.Quantity, i.Description)).ToList(),
             order.DesignRequests.Select(dr => new DesignRequestSummaryDto(
                 dr.Id, dr.OrderItemId, dr.Type, dr.Status, dr.Files.Count)).ToList(),
             order.Shipment is null ? null : new ShipmentSummaryDto(

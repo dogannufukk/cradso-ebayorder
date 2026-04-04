@@ -12,6 +12,7 @@ public record UpdateOrderCommand(
 public record UpdateOrderItemDto(
     Guid? Id,
     string SKU,
+    string? EbayProductCode,
     int Quantity,
     string? Description
 );

@@ -12,9 +12,8 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.Property(c => c.Id).HasDefaultValueSql("NEWSEQUENTIALID()");
 
         builder.Property(c => c.CustomerName).HasMaxLength(200);
-        builder.Property(c => c.CompanyName).HasMaxLength(200);
+        builder.Property(c => c.EbayUsername).HasMaxLength(200);
         builder.Property(c => c.Email).HasMaxLength(200).IsRequired();
-        builder.Property(c => c.MobilePhone).HasMaxLength(20);
         builder.Property(c => c.Phone).HasMaxLength(20);
         builder.Property(c => c.AddressLine1).HasMaxLength(300);
         builder.Property(c => c.AddressLine2).HasMaxLength(300);

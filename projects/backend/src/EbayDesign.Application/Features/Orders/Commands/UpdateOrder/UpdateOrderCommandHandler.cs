@@ -49,6 +49,7 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand>
                 if (existing != null)
                 {
                     existing.SKU = dto.SKU;
+                    existing.EbayProductCode = dto.EbayProductCode;
                     existing.Quantity = dto.Quantity;
                     existing.Description = dto.Description;
                 }
@@ -59,6 +60,7 @@ public class UpdateOrderCommandHandler : IRequestHandler<UpdateOrderCommand>
                 {
                     OrderId = order.Id,
                     SKU = dto.SKU,
+                    EbayProductCode = dto.EbayProductCode,
                     Quantity = dto.Quantity,
                     Description = dto.Description
                 };

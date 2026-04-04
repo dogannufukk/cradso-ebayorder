@@ -25,7 +25,7 @@ public class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, Pagin
             var search = request.Search.ToLower();
             query = query.Where(c =>
                 (c.CustomerName != null && c.CustomerName.ToLower().Contains(search)) ||
-                (c.CompanyName != null && c.CompanyName.ToLower().Contains(search)) ||
+                (c.EbayUsername != null && c.EbayUsername.ToLower().Contains(search)) ||
                 c.Email.ToLower().Contains(search));
         }
 
@@ -36,8 +36,8 @@ public class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, Pagin
         if (!string.IsNullOrWhiteSpace(request.Email))
             query = query.Where(c => c.Email.ToLower().Contains(request.Email.ToLower()));
 
-        if (!string.IsNullOrWhiteSpace(request.MobilePhone))
-            query = query.Where(c => c.MobilePhone != null && c.MobilePhone.ToLower().Contains(request.MobilePhone.ToLower()));
+        if (!string.IsNullOrWhiteSpace(request.EbayUsername))
+            query = query.Where(c => c.EbayUsername != null && c.EbayUsername.ToLower().Contains(request.EbayUsername.ToLower()));
 
         if (!string.IsNullOrWhiteSpace(request.City))
             query = query.Where(c => c.City != null && c.City.ToLower().Contains(request.City.ToLower()));
@@ -59,9 +59,9 @@ public class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, Pagin
             "email" => request.SortDirection == "asc"
                 ? query.OrderBy(c => c.Email)
                 : query.OrderByDescending(c => c.Email),
-            "mobilephone" => request.SortDirection == "asc"
-                ? query.OrderBy(c => c.MobilePhone)
-                : query.OrderByDescending(c => c.MobilePhone),
+            "ebayusername" => request.SortDirection == "asc"
+                ? query.OrderBy(c => c.EbayUsername)
+                : query.OrderByDescending(c => c.EbayUsername),
             "city" => request.SortDirection == "asc"
                 ? query.OrderBy(c => c.City)
                 : query.OrderByDescending(c => c.City),
@@ -81,7 +81,7 @@ public class GetCustomersQueryHandler : IRequestHandler<GetCustomersQuery, Pagin
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
             .Select(c => new CustomerDto(
-                c.Id, c.CustomerName, c.CompanyName, c.Email, c.MobilePhone, c.Phone,
+                c.Id, c.CustomerName, c.EbayUsername, c.Email, c.Phone,
                 c.City, c.PostCode, c.Country, c.CreatedDate))
             .ToListAsync(cancellationToken);
 

@@ -7,9 +7,8 @@ public record GetCustomerByIdQuery(Guid Id) : IRequest<CustomerDetailDto?>;
 public record CustomerDetailDto(
     Guid Id,
     string? CustomerName,
-    string? CompanyName,
+    string? EbayUsername,
     string Email,
-    string? MobilePhone,
     string? Phone,
     string? AddressLine1,
     string? AddressLine2,

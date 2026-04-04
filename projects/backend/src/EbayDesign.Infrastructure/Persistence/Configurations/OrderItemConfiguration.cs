@@ -12,6 +12,7 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
         builder.Property(i => i.Id).HasDefaultValueSql("NEWSEQUENTIALID()");
 
         builder.Property(i => i.SKU).HasMaxLength(100).IsRequired();
+        builder.Property(i => i.EbayProductCode).HasMaxLength(200);
         builder.Property(i => i.Quantity).IsRequired().HasDefaultValue(1);
         builder.Property(i => i.Description).HasMaxLength(500);
 

@@ -14,9 +14,8 @@ $(function () {
 
         var data = {
             customerName: $('#e-name').val().trim() || null,
-            companyName: $('#e-company').val().trim() || null,
+            ebayUsername: $('#e-ebayuser').val().trim() || null,
             email: email,
-            mobilePhone: $('#e-mobile').val().trim() || null,
             phone: $('#e-phone').val().trim() || null,
             addressLine1: $('#e-addr1').val().trim() || null,
             addressLine2: $('#e-addr2').val().trim() || null,

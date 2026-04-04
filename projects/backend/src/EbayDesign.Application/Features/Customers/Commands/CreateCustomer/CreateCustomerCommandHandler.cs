@@ -18,9 +18,8 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
         var customer = new Customer
         {
             CustomerName = request.CustomerName,
-            CompanyName = request.CompanyName,
+            EbayUsername = request.EbayUsername,
             Email = request.Email,
-            MobilePhone = request.MobilePhone,
             Phone = request.Phone,
             AddressLine1 = request.AddressLine1,
             AddressLine2 = request.AddressLine2,

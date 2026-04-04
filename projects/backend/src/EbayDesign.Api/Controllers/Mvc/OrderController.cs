@@ -91,7 +91,7 @@ public class OrderController : Controller
     [HttpPost]
     public async Task<IActionResult> AddItem(Guid id, [FromBody] AddOrderItemRequest request, CancellationToken ct)
     {
-        var itemId = await _mediator.Send(new AddOrderItemCommand(id, request.SKU, request.Quantity, request.Description, request.DesignType), ct);
+        var itemId = await _mediator.Send(new AddOrderItemCommand(id, request.SKU, request.EbayProductCode, request.Quantity, request.Description, request.DesignType), ct);
         return Json(new { id = itemId });
     }
 
@@ -113,6 +113,6 @@ public class OrderController : Controller
 
     public record UpdateOrderRequest(string EbayOrderNo, string? Notes, List<UpdateOrderItemDto> Items);
     public record UpdateStatusRequest(OrderStatus Status);
-    public record AddOrderItemRequest(string SKU, int Quantity, string? Description, DesignRequestType DesignType);
+    public record AddOrderItemRequest(string SKU, string? EbayProductCode, int Quantity, string? Description, DesignRequestType DesignType);
     public record CreateShipmentRequest(string TrackingNumber, DeliveryType DeliveryType);
 }

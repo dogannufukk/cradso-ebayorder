@@ -93,7 +93,7 @@ public class GetReportDataQueryHandler : IRequestHandler<GetReportDataQuery, Rep
                 var custOrders = orders.Where(o => o.CustomerId == c.Id).ToList();
                 var custDesigns = designs.Where(d => custOrders.Any(o => o.Id == d.OrderId)).ToList();
                 return new CustomerActivity(
-                    c.CustomerName ?? c.CompanyName ?? "Unknown",
+                    c.CustomerName ?? c.EbayUsername ?? "Unknown",
                     c.Email,
                     custOrders.Count,
                     custDesigns.Count(d => d.Status == DesignRequestStatus.Approved),
@@ -142,7 +142,7 @@ public class GetReportDataQueryHandler : IRequestHandler<GetReportDataQuery, Rep
             {
                 var customer = customers.FirstOrDefault(c => c.Id == o.CustomerId);
                 var days = (now - (o.ModifiedDate ?? o.CreatedDate)).Days;
-                return new ProductionItem(o.Id, o.EbayOrderNo, customer?.CustomerName ?? customer?.CompanyName ?? "Unknown", days);
+                return new ProductionItem(o.Id, o.EbayOrderNo, customer?.CustomerName ?? customer?.EbayUsername ?? "Unknown", days);
             })
             .OrderByDescending(p => p.DaysSinceApproved)
             .ToList();

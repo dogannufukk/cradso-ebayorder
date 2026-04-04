@@ -194,7 +194,7 @@ $(function () {
         var html = '<div class="approval-actions mt-3">';
         html += '<div class="d-flex gap-2">';
         html += '<button class="btn ' + (dec && dec.action === 'approve' ? 'btn-success' : 'btn-outline-success') + ' btn-portal-approve" data-id="' + item.designRequestId + '"><i class="bi bi-check-lg me-1"></i>Approve Design</button>';
-        html += '<button class="btn ' + (dec && dec.action === 'reject' ? 'btn-danger' : 'btn-outline-danger') + ' btn-portal-reject" data-id="' + item.designRequestId + '"><i class="bi bi-x-lg me-1"></i>Request Changes</button>';
+        html += '<button class="btn ' + (dec && dec.action === 'reject' ? 'btn-danger' : 'btn-outline-danger') + ' btn-portal-reject" data-id="' + item.designRequestId + '"><i class="bi bi-x-lg me-1"></i>Don't Approve</button>';
         html += '</div>';
 
         if (dec && dec.action === 'approve') {
@@ -204,7 +204,7 @@ $(function () {
             html += '<div class="portal-reject-reason mt-2" data-id="' + item.designRequestId + '">';
             html += '<textarea class="form-control form-control-sm portal-reason-text" rows="2" placeholder="Please describe the changes you need...">' + escapeHtml(dec.reason || '') + '</textarea>';
             html += '</div>';
-            html += '<div class="decision-indicator mt-2"><span class="badge bg-danger"><i class="bi bi-x-lg me-1"></i>Will Request Changes</span></div>';
+            html += '<div class="decision-indicator mt-2"><span class="badge bg-danger"><i class="bi bi-x-lg me-1"></i>Won't Approve</span></div>';
         }
         html += '</div>';
         return html;

@@ -24,8 +24,8 @@ public class GetCustomerByIdQueryHandler : IRequestHandler<GetCustomerByIdQuery,
         if (customer is null) return null;
 
         return new CustomerDetailDto(
-            customer.Id, customer.CustomerName, customer.CompanyName, customer.Email,
-            customer.MobilePhone, customer.Phone,
+            customer.Id, customer.CustomerName, customer.EbayUsername, customer.Email,
+            customer.Phone,
             customer.AddressLine1, customer.AddressLine2,
             customer.City, customer.County, customer.PostCode, customer.Country,
             customer.CreatedDate, customer.Orders.Count

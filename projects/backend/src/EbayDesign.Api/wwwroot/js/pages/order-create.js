@@ -86,9 +86,8 @@ $(function () {
 
         var data = {
             customerName: $('#nc-name').val().trim() || null,
-            companyName: $('#nc-company').val().trim() || null,
+            ebayUsername: $('#nc-ebayuser').val().trim() || null,
             email: email,
-            mobilePhone: $('#nc-mobile').val().trim() || null,
             phone: $('#nc-phone').val().trim() || null,
             addressLine1: $('#nc-addr1').val().trim() || null,
             addressLine2: $('#nc-addr2').val().trim() || null,
@@ -101,7 +100,7 @@ $(function () {
         var $btn = $(this).prop('disabled', true).text('Creating...');
         api.post('/Customer/CreateCustomer', data).done(function (res) {
             toast.success('Customer created');
-            selectCustomer(res.id, data.customerName || data.companyName || '', data.email);
+            selectCustomer(res.id, data.customerName || data.ebayUsername || '', data.email);
         }).always(function () {
             $btn.prop('disabled', false).html('<i class="bi bi-check-lg me-1"></i> Create Customer');
         });
@@ -116,9 +115,10 @@ $(function () {
         html += '<button class="btn btn-sm btn-outline-danger remove-item"><i class="bi bi-trash"></i></button>';
         html += '</div>';
         html += '<div class="row g-2">';
-        html += '<div class="col-md-3"><label class="form-label small">SKU <span class="text-danger">*</span></label><input type="text" class="form-control form-control-sm item-sku" required /></div>';
-        html += '<div class="col-md-2"><label class="form-label small">Quantity <span class="text-danger">*</span></label><input type="number" class="form-control form-control-sm item-qty" value="1" min="1" required /></div>';
-        html += '<div class="col-md-4"><label class="form-label small">Description</label><input type="text" class="form-control form-control-sm item-desc" /></div>';
+        html += '<div class="col-md-2"><label class="form-label small">SKU <span class="text-danger">*</span></label><input type="text" class="form-control form-control-sm item-sku" required /></div>';
+        html += '<div class="col-md-3"><label class="form-label small">eBay Product Code</label><input type="text" class="form-control form-control-sm item-epc" /></div>';
+        html += '<div class="col-md-1"><label class="form-label small">Qty <span class="text-danger">*</span></label><input type="number" class="form-control form-control-sm item-qty" value="1" min="1" required /></div>';
+        html += '<div class="col-md-3"><label class="form-label small">Description</label><input type="text" class="form-control form-control-sm item-desc" /></div>';
         html += '<div class="col-md-3"><label class="form-label small">Design Type</label>';
         html += '<select class="form-select form-select-sm item-dtype" disabled><option value="0" selected>Customer Upload</option></select></div>';
         html += '</div></div>';
@@ -149,6 +149,7 @@ $(function () {
             if (qty < 1) { valid = false; toast.error('Quantity must be at least 1'); return false; }
             items.push({
                 sku: sku,
+                ebayProductCode: $(this).find('.item-epc').val().trim() || null,
                 quantity: qty,
                 description: $(this).find('.item-desc').val().trim() || null,
                 designType: parseInt($(this).find('.item-dtype').val())

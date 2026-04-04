@@ -11,7 +11,8 @@
       "Bash(grep -E \"error CS|başarılı|Hata$\")",
       "Bash(curl -sL \"https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js\" -o \"C:\\\\Users\\\\admin\\\\Desktop\\\\personal-projects\\\\Cradso\\\\cradso-ebayorder\\\\projects\\\\backend\\\\src\\\\EbayDesign.Api\\\\wwwroot\\\\lib\\\\chartjs\\\\chart.umd.min.js\")",
       "Bash(dotnet publish:*)",
-      "Bash(ls \"C:\\\\Users\\\\admin\\\\Desktop\\\\personal-projects\\\\Cradso\\\\cradso-ebayorder\\\\projects\\\\backend\\\\src\\\\EbayDesign.Api\\\\publish\"\" | head -20 && echo \"---\" && ls \"C:UsersadminDesktoppersonal-projectsCradsocradso-ebayorderprojectsbackendsrcEbayDesign.Apipublishwwwroot \")"
+      "Bash(ls \"C:\\\\Users\\\\admin\\\\Desktop\\\\personal-projects\\\\Cradso\\\\cradso-ebayorder\\\\projects\\\\backend\\\\src\\\\EbayDesign.Api\\\\publish\"\" | head -20 && echo \"---\" && ls \"C:UsersadminDesktoppersonal-projectsCradsocradso-ebayorderprojectsbackendsrcEbayDesign.Apipublishwwwroot \")",
+      "Bash(dotnet ef:*)"
     ]
   }
 }

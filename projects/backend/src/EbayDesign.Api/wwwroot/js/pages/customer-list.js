@@ -12,13 +12,12 @@ $(function () {
             {
                 key: 'customerName', header: 'Name', sortable: true, filterable: true,
                 render: function (val, row) {
-                    var name = val || row.companyName || 'No name';
+                    var name = val || row.ebayUsername || 'No name';
                     return '<a href="/Customer/Detail/' + row.id + '" class="text-decoration-none fw-medium">' + escapeHtml(name) + '</a>';
                 }
             },
-            { key: 'companyName', header: 'Company', sortable: true },
+            { key: 'ebayUsername', header: 'eBay Username', sortable: true, filterable: true },
             { key: 'email', header: 'Email', sortable: true, filterable: true },
-            { key: 'mobilePhone', header: 'Phone', sortable: true, filterable: true },
             { key: 'city', header: 'City', sortable: true, filterable: true },
             { key: 'postCode', header: 'PostCode', sortable: true, filterable: true },
             { key: 'country', header: 'Country', sortable: true },
@@ -39,15 +38,14 @@ $(function () {
     $('#btn-add-customer').click(function () {
         var email = $('#add-email').val().trim();
         var name = $('#add-name').val().trim();
-        var company = $('#add-company').val().trim();
+        var ebayUser = $('#add-ebayuser').val().trim();
         if (!email) { toast.error('Email is required'); return; }
-        if (!name && !company) { toast.error('Customer Name or Company Name is required'); return; }
+        if (!name && !ebayUser) { toast.error('Customer Name or eBay Username is required'); return; }
 
         var data = {
             customerName: name || null,
-            companyName: company || null,
+            ebayUsername: ebayUser || null,
             email: email,
-            mobilePhone: $('#add-mobile').val().trim() || null,
             phone: $('#add-phone').val().trim() || null,
             addressLine1: $('#add-addr1').val().trim() || null,
             addressLine2: $('#add-addr2').val().trim() || null,
@@ -62,7 +60,6 @@ $(function () {
             toast.success('Customer created');
             bootstrap.Modal.getInstance('#addCustomerModal').hide();
             grid.refresh();
-            // Clear form
             $('#addCustomerModal input').not('#add-country').val('');
         }).always(function () { $btn.prop('disabled', false); });
     });

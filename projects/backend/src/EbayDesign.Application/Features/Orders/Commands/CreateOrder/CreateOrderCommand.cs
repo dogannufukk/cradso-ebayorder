@@ -12,6 +12,7 @@ public record CreateOrderCommand(
 
 public record CreateOrderItemDto(
     string SKU,
+    string? EbayProductCode,
     int Quantity,
     string? Description,
     DesignRequestType DesignType

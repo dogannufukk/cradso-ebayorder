@@ -9,11 +9,11 @@ public class UpdateCustomerCommandValidator : AbstractValidator<UpdateCustomerCo
         RuleFor(x => x.Id).NotEmpty();
 
         RuleFor(x => x)
-            .Must(x => !string.IsNullOrWhiteSpace(x.CustomerName) || !string.IsNullOrWhiteSpace(x.CompanyName))
-            .WithMessage("Customer Name or Company Name is required.");
+            .Must(x => !string.IsNullOrWhiteSpace(x.CustomerName) || !string.IsNullOrWhiteSpace(x.EbayUsername))
+            .WithMessage("Customer Name or Ebay Username is required.");
 
         RuleFor(x => x.CustomerName).MaximumLength(200);
-        RuleFor(x => x.CompanyName).MaximumLength(200);
+        RuleFor(x => x.EbayUsername).MaximumLength(200);
 
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("Email is required.")

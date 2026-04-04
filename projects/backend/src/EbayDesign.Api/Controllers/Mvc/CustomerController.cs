@@ -37,11 +37,11 @@ public class CustomerController : Controller
     [HttpGet]
     public async Task<IActionResult> List(int page = 1, int pageSize = 20,
         string? search = null, string? sortBy = null, string? sortDirection = null,
-        string? customerName = null, string? email = null, string? mobilePhone = null,
+        string? customerName = null, string? email = null, string? ebayUsername = null,
         string? city = null, string? postCode = null, string? country = null,
         CancellationToken ct = default)
     {
-        var result = await _mediator.Send(new GetCustomersQuery(page, pageSize, search, sortBy, sortDirection, customerName, email, mobilePhone, city, postCode, country), ct);
+        var result = await _mediator.Send(new GetCustomersQuery(page, pageSize, search, sortBy, sortDirection, customerName, email, ebayUsername, city, postCode, country), ct);
         return Json(result);
     }
 
@@ -57,8 +57,8 @@ public class CustomerController : Controller
     [HttpPut]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCustomerRequest request, CancellationToken ct)
     {
-        await _mediator.Send(new UpdateCustomerCommand(id, request.CustomerName, request.CompanyName,
-            request.Email, request.MobilePhone, request.Phone, request.AddressLine1, request.AddressLine2,
+        await _mediator.Send(new UpdateCustomerCommand(id, request.CustomerName, request.EbayUsername,
+            request.Email, request.Phone, request.AddressLine1, request.AddressLine2,
             request.City, request.County, request.PostCode, request.Country), ct);
         return Json(new { success = true });
     }
@@ -72,7 +72,7 @@ public class CustomerController : Controller
     }
 
     public record UpdateCustomerRequest(
-        string? CustomerName, string? CompanyName, string Email,
-        string? MobilePhone, string? Phone, string? AddressLine1, string? AddressLine2,
+        string? CustomerName, string? EbayUsername, string Email,
+        string? Phone, string? AddressLine1, string? AddressLine2,
         string? City, string? County, string? PostCode, string? Country);
 }

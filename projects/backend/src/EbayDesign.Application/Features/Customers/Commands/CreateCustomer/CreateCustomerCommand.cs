@@ -4,9 +4,8 @@ namespace EbayDesign.Application.Features.Customers.Commands.CreateCustomer;
 
 public record CreateCustomerCommand(
     string? CustomerName,
-    string? CompanyName,
+    string? EbayUsername,
     string Email,
-    string? MobilePhone,
     string? Phone,
     string? AddressLine1,
     string? AddressLine2,

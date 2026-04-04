@@ -30,6 +30,7 @@ public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, Gui
             var orderItem = new OrderItem
             {
                 SKU = itemDto.SKU,
+                EbayProductCode = itemDto.EbayProductCode,
                 Quantity = itemDto.Quantity,
                 Description = itemDto.Description
             };

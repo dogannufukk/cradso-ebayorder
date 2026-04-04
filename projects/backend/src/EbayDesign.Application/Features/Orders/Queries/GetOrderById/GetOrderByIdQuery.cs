@@ -20,7 +20,7 @@ public record OrderDetailDto(
 public record CustomerSummaryDto(Guid Id, string CustomerName, string Email);
 
 public record OrderItemDetailDto(
-    Guid Id, string SKU, int Quantity, string? Description
+    Guid Id, string SKU, string? EbayProductCode, int Quantity, string? Description
 );
 
 public record DesignRequestSummaryDto(

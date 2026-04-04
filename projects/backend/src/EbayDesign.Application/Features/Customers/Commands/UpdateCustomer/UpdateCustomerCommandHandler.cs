@@ -20,9 +20,8 @@ public class UpdateCustomerCommandHandler : IRequestHandler<UpdateCustomerComman
             ?? throw new KeyNotFoundException($"Customer with ID {request.Id} not found.");
 
         customer.CustomerName = request.CustomerName;
-        customer.CompanyName = request.CompanyName;
+        customer.EbayUsername = request.EbayUsername;
         customer.Email = request.Email;
-        customer.MobilePhone = request.MobilePhone;
         customer.Phone = request.Phone;
         customer.AddressLine1 = request.AddressLine1;
         customer.AddressLine2 = request.AddressLine2;

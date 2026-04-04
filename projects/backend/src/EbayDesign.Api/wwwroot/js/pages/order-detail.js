@@ -124,12 +124,13 @@ $(function () {
         $('#items-header-actions').html(headerHtml);
 
         var html = '<table class="table mb-0" id="items-table"><thead><tr>';
-        html += '<th>SKU</th><th style="width:80px">Qty</th><th>Description</th>';
+        html += '<th>SKU</th><th>eBay Product Code</th><th style="width:80px">Qty</th><th>Description</th>';
         if (isDraft) html += '<th style="width:90px"></th>';
         html += '</tr></thead><tbody>';
         ORDER_DATA.items.forEach(function (item) {
             html += '<tr data-item-id="' + item.id + '">';
             html += '<td class="fw-medium item-sku">' + escapeHtml(item.sku) + '</td>';
+            html += '<td class="item-epc">' + escapeHtml(item.ebayProductCode || '-') + '</td>';
             html += '<td class="item-qty">' + item.quantity + '</td>';
             html += '<td class="item-desc">' + escapeHtml(item.description || '-') + '</td>';
             if (isDraft) {
@@ -211,12 +212,15 @@ $(function () {
             var $tr = $(this).closest('tr');
             if ($tr.hasClass('editing')) return;
             var sku = $tr.find('.item-sku').text();
+            var epc = $tr.find('.item-epc').text();
             var qty = $tr.find('.item-qty').text();
             var desc = $tr.find('.item-desc').text();
             if (desc === '-') desc = '';
+            if (epc === '-') epc = '';
 
             $tr.addClass('editing');
             $tr.find('.item-sku').html('<input type="text" class="form-control form-control-sm edit-sku" value="' + escapeHtml(sku) + '" />');
+            $tr.find('.item-epc').html('<input type="text" class="form-control form-control-sm edit-epc" value="' + escapeHtml(epc) + '" />');
             $tr.find('.item-qty').html('<input type="number" class="form-control form-control-sm edit-qty" value="' + qty + '" min="1" />');
             $tr.find('.item-desc').html('<input type="text" class="form-control form-control-sm edit-desc" value="' + escapeHtml(desc) + '" />');
             $tr.find('td:last').html(
@@ -234,20 +238,20 @@ $(function () {
         $(document).on('click', '.btn-save-item', function () {
             var $tr = $(this).closest('tr');
             var sku = $tr.find('.edit-sku').val().trim();
+            var epc = $tr.find('.edit-epc').val().trim();
             var qty = parseInt($tr.find('.edit-qty').val()) || 0;
             var desc = $tr.find('.edit-desc').val().trim();
             if (!sku) { toast.error('SKU is required'); return; }
             if (qty < 1) { toast.error('Quantity must be at least 1'); return; }
 
-            // Save entire order with updated items
             var items = [];
             $('#items-table tbody tr').each(function () {
                 var id = $(this).data('item-id');
                 if ($(this).hasClass('editing') && $(this).find('.edit-sku').length) {
-                    items.push({ id: id, sku: sku, quantity: qty, description: desc || null });
+                    items.push({ id: id, sku: sku, ebayProductCode: epc || null, quantity: qty, description: desc || null });
                 } else {
                     var origItem = ORDER_DATA.items.find(function (i) { return i.id === id; });
-                    if (origItem) items.push({ id: id, sku: origItem.sku, quantity: origItem.quantity, description: origItem.description });
+                    if (origItem) items.push({ id: id, sku: origItem.sku, ebayProductCode: origItem.ebayProductCode, quantity: origItem.quantity, description: origItem.description });
                 }
             });
 
@@ -283,6 +287,7 @@ $(function () {
             var $tbody = $('#items-table tbody');
             var html = '<tr class="editing new-item">';
             html += '<td><input type="text" class="form-control form-control-sm edit-sku" placeholder="SKU" /></td>';
+            html += '<td><input type="text" class="form-control form-control-sm edit-epc" placeholder="eBay Product Code" /></td>';
             html += '<td><input type="number" class="form-control form-control-sm edit-qty" value="1" min="1" /></td>';
             html += '<td><input type="text" class="form-control form-control-sm edit-desc" placeholder="Description" /></td>';
             html += '<td class="text-end">';
@@ -300,6 +305,7 @@ $(function () {
         $(document).on('click', '.btn-confirm-add', function () {
             var $tr = $(this).closest('tr');
             var sku = $tr.find('.edit-sku').val().trim();
+            var epc = $tr.find('.edit-epc').val().trim();
             var qty = parseInt($tr.find('.edit-qty').val()) || 0;
             var desc = $tr.find('.edit-desc').val().trim();
             if (!sku) { toast.error('SKU is required'); return; }
@@ -307,7 +313,7 @@ $(function () {
 
             var $btn = $(this).prop('disabled', true);
             api.post('/Order/AddItem/' + orderId, {
-                sku: sku, quantity: qty, description: desc || null, designType: 0
+                sku: sku, ebayProductCode: epc || null, quantity: qty, description: desc || null, designType: 0
             }).done(function () {
                 toast.success('Item added');
                 location.reload();
@@ -442,6 +448,10 @@ $(function () {
         // Header
         html += '<div class="d-flex justify-content-between align-items-center mb-3">';
         html += '<div><span class="badge bg-secondary me-2">' + escapeHtml(sku) + '</span>' + renderBadge(d.status, DESIGN_STATUS) + '</div>';
+        if (d.approvalToken) {
+            var portalLink = window.location.origin + '/Portal/Design/' + d.approvalToken;
+            html += '<a href="' + portalLink + '" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-link-45deg me-1"></i>Portal Link</a>';
+        }
         html += '</div>';
 
         // --- Version Timeline ---
@@ -452,7 +462,7 @@ $(function () {
             html += '<div class="mt-3 border-top pt-3">';
             html += '<div class="form-check form-check-inline"><input type="radio" class="form-check-input print-decision" name="print-' + d.id + '" value="approve" id="pa-' + d.id + '"><label class="form-check-label" for="pa-' + d.id + '">Print Suitable</label></div>';
             html += '<div class="form-check form-check-inline"><input type="radio" class="form-check-input print-decision" name="print-' + d.id + '" value="reject" id="pr-' + d.id + '"><label class="form-check-label" for="pr-' + d.id + '">Not Suitable</label></div>';
-            html += '<div class="mt-2 print-reject-reason d-none" data-id="' + d.id + '"><input type="text" class="form-control form-control-sm reject-reason-input" placeholder="Reason for rejection..." /></div>';
+            html += '<div class="mt-2 print-reject-reason d-none" data-id="' + d.id + '"><textarea class="form-control form-control-sm reject-reason-input" rows="2" placeholder="Reason for rejection..."></textarea></div>';
             html += '</div>';
         }
 

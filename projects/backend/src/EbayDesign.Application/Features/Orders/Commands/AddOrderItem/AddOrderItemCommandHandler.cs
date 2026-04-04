@@ -30,6 +30,7 @@ public class AddOrderItemCommandHandler : IRequestHandler<AddOrderItemCommand, G
             Id = Guid.NewGuid(),
             OrderId = order.Id,
             SKU = request.SKU,
+            EbayProductCode = request.EbayProductCode,
             Quantity = request.Quantity,
             Description = request.Description
         };

@@ -11,7 +11,7 @@ public record GetCustomersQuery(
     string? SortDirection = null,
     string? CustomerName = null,
     string? Email = null,
-    string? MobilePhone = null,
+    string? EbayUsername = null,
     string? City = null,
     string? PostCode = null,
     string? Country = null
@@ -20,9 +20,8 @@ public record GetCustomersQuery(
 public record CustomerDto(
     Guid Id,
     string? CustomerName,
-    string? CompanyName,
+    string? EbayUsername,
     string Email,
-    string? MobilePhone,
     string? Phone,
     string? City,
     string? PostCode,

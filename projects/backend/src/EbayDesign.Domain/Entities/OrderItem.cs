@@ -6,6 +6,7 @@ public class OrderItem : BaseEntity
 {
     public Guid OrderId { get; set; }
     public string SKU { get; set; } = string.Empty;
+    public string? EbayProductCode { get; set; }
     public int Quantity { get; set; } = 1;
     public string? Description { get; set; }
 
